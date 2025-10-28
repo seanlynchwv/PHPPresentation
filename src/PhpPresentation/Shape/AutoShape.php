@@ -275,7 +275,7 @@ class AutoShape extends AbstractShape implements ComparableInterface
     }
 
     /** @var null|int */
-    private $roundRectAdj;
+    protected $roundRectAdj;
 
     public function getRoundRectAdj(): ?int
     {

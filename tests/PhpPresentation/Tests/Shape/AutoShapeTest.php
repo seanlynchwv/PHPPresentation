@@ -73,7 +73,7 @@ class AutoShapeTest extends TestCase
     public function testNoRadiusByDefaultIsNull(): void
     {
         $shape = new AutoShape();
-        self::assertNull($shape->getRoundRectAdj());
+        self::assertNull($shape->getRoundRectCorner());
     }
 
     public function testWriterEmitsAdjGuideForRoundRect(): void

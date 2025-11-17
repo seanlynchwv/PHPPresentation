@@ -1190,15 +1190,25 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         // a:avLst (+ optional adj for roundRect)
         $needsAdj = ($shape->getType() === AutoShape::TYPE_ROUNDED_RECTANGLE);
-        $adj = $shape->getRoundRectAdj();
+        $cornerPx = $shape->getRoundRectCorner();
 
-        if ($needsAdj && $adj !== null) {
-            $objWriter->startElement('a:avLst');
-            $objWriter->startElement('a:gd');
-            $objWriter->writeAttribute('name', 'adj');
-            $objWriter->writeAttribute('fmla', 'val ' . (string) $adj); // 0..50000
-            $objWriter->endElement(); // a:gd
-            $objWriter->endElement(); // a:avLst
+        if ($needsAdj && $cornerPx !== null) {
+            $minHalf = (int) floor(min($shape->getWidth(), $shape->getHeight()) / 2);
+
+            if ($minHalf > 0) {
+                $adj = (int) round($cornerPx / $minHalf * 50000);
+                $adj = max(0, min(50000, $adj));
+
+                $objWriter->startElement('a:avLst');
+                $objWriter->startElement('a:gd');
+                $objWriter->writeAttribute('name', 'adj');
+                $objWriter->writeAttribute('fmla', 'val ' . (string) $adj);
+                $objWriter->endElement(); // a:gd
+                $objWriter->endElement(); // a:avLst
+            } else {
+                // invalid size, just emit empty avLst
+                $objWriter->writeElement('a:avLst');
+            }
         } else {
             $objWriter->writeElement('a:avLst');
         }

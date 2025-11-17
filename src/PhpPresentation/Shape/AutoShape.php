@@ -275,11 +275,11 @@ class AutoShape extends AbstractShape implements ComparableInterface
     }
 
     /** @var null|int */
-    private $roundRectAdj;
+    private $roundRectCorner;
 
-    public function getRoundRectAdj(): ?int
+    public function getRoundRectCorner(): ?int
     {
-        return $this->roundRectAdj;
+        return $this->roundRectCorner;
     }
 
     /**
@@ -287,10 +287,7 @@ class AutoShape extends AbstractShape implements ComparableInterface
      */
     public function setRoundRectCorner(int $pixels): self
     {
-        $minHalf = (int) floor(min($this->width, $this->height) / 2);
-        if ($minHalf > 0) {
-            $this->roundRectAdj = max(0, min(50000, (int) round($pixels / $minHalf * 50000)));
-        }
+        $this->roundRectCorner = max(0, $pixels);
 
         return $this;
     }
@@ -298,6 +295,6 @@ class AutoShape extends AbstractShape implements ComparableInterface
     // override the hash so radius works
     public function getHashCode(): string
     {
-        return md5(parent::getHashCode() . $this->type . $this->text . (string) $this->roundRectAdj . __CLASS__);
+        return md5(parent::getHashCode() . $this->type . $this->text . (string) $this->roundRectCorner . __CLASS__);
     }
 }

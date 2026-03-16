@@ -60,7 +60,7 @@ jobs:
             run: composer install --ansi --prefer-dist --no-interaction --no-progress
 
         -   name: Run phpstan
-            run: ./vendor/bin/phpstan analyse -c phpstan.neon.dist
+            run: ./vendor/bin/phpstan analyse -c phpstan.neon.dist src
 
   phpunit:
     name: PHPUnit ${{ matrix.php }}
